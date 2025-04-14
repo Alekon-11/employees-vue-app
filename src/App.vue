@@ -3,7 +3,7 @@
         <EmployeesHeader />
 
         <div class="search-panel">
-            <EmployeesSearch />
+            <EmployeesSearch v-model="search" />
             <EmployeesFilter />
         </div>
 
@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import EmployeesAddForm from './components/EmployeesAddForm.vue'
 import EmployeesFilter from './components/EmployeesFilter.vue'
 import EmployeesHeader from './components/EmployeesHeader.vue'
@@ -33,22 +33,28 @@ const employees = ref<Employee[]>([
     { name: 'Tisha Katava', salary: 7000, id: 2, increase: false, reward: false }
 ])
 
+const search = ref<string>('')
+
+const searchedEmployee = computed(() => {
+    return employees.value.filter((item: Employee) => item.name.toLowerCase().includes(search.value.toLowerCase()))
+})
+
 const toggleIncrease = (id: number) => {
-    const targetEmployee = employees.value.find(item => item.id === id)
+    const targetEmployee = employees.value.find((item: Employee) => item.id === id)
 
     if (targetEmployee) {
         targetEmployee.increase = !targetEmployee.increase
     }
 }
 const toggleReward = (id: number) => {
-    const targetEmployee = employees.value.find(item => item.id === id)
+    const targetEmployee = employees.value.find((item: Employee) => item.id === id)
 
     if (targetEmployee) {
         targetEmployee.reward = !targetEmployee.reward
     }
 }
 const removeEmployee = (id: number) => {
-    const newList = employees.value.filter(item => item.id !== id)
+    const newList = employees.value.filter((item: Employee) => item.id !== id)
     employees.value = newList
 }
 const addEmployee = (employee: Employee) => {
