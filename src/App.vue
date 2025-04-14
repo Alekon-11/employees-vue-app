@@ -13,7 +13,7 @@
             @toggle-reward="toggleReward"
             :employees="employees"
         />
-        <EmployeesAddForm />
+        <EmployeesAddForm @add-employee="addEmployee" />
     </div>
 </template>
 
@@ -50,6 +50,9 @@ const toggleReward = (id: number) => {
 const removeEmployee = (id: number) => {
     const newList = employees.value.filter(item => item.id !== id)
     employees.value = newList
+}
+const addEmployee = (employee: Employee) => {
+    employees.value.push(employee)
 }
 </script>
 

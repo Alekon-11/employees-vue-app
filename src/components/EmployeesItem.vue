@@ -26,21 +26,21 @@ interface Props {
 }
 
 const emit = defineEmits<{
-    (e: 'toggleIncrease', id: number): void
-    (e: 'toggleReward', id: number): void
-    (e: 'removeEmployee', id: number): void
+    (e: 'toggle-increase', id: number): void
+    (e: 'toggle-reward', id: number): void
+    (e: 'remove-employee', id: number): void
 }>()
 
 const prop = defineProps<Props>()
 
 const toggleIncrease = () => {
-    emit('toggleIncrease', prop.employee.id)
+    emit('toggle-increase', prop.employee.id)
 }
 const toggleReward = () => {
-    emit('toggleReward', prop.employee.id)
+    emit('toggle-reward', prop.employee.id)
 }
 const removeEmployee = () => {
-    emit('removeEmployee', prop.employee.id)
+    emit('remove-employee', prop.employee.id)
 }
 </script>
 

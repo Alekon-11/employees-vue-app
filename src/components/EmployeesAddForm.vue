@@ -1,16 +1,42 @@
 <template>
     <div class="app-add-form">
         <h3>Добавьте нового сотрудника</h3>
-        <form class="add-form d-flex">
-            <input type="text" class="form-control new-post-label" placeholder="Как его зовут?" />
-            <input type="number" class="form-control new-post-label" placeholder="З/П в $?" />
+        <form class="add-form d-flex" @submit.prevent="addEmployee">
+            <input v-model="name" type="text" class="form-control new-post-label" placeholder="Как его зовут?" />
+            <input v-model="salary" type="number" class="form-control new-post-label" placeholder="З/П в $?" />
 
             <button type="submit" class="btn btn-outline-light">Добавить</button>
         </form>
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { Employee } from '../interfaces/Employee'
+
+const name = ref<string>('')
+const salary = ref<null | number>(null)
+const emit = defineEmits<{
+    (e: 'add-employee', employee: Employee): void
+}>()
+
+const addEmployee = () => {
+    const newEmployee = {
+        name: name.value,
+        salary: salary.value,
+        id: Date.now(),
+        increase: false,
+        reward: false
+    }
+
+    if (name.value && salary.value) {
+        emit('add-employee', newEmployee)
+    }
+
+    name.value = ''
+    salary.value = null
+}
+</script>
 
 <style scoped>
 .app-add-form {

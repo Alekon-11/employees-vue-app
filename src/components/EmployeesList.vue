@@ -22,19 +22,19 @@ interface Props {
 defineProps<Props>()
 
 const emit = defineEmits<{
-    (e: 'toggleIncrease', id: number): void
-    (e: 'toggleReward', id: number): void
-    (e: 'removeEmployee', id: number): void
+    (e: 'toggle-increase', id: number): void
+    (e: 'toggle-reward', id: number): void
+    (e: 'remove-employee', id: number): void
 }>()
 
 const toggleIncrease = (id: number) => {
-    emit('toggleIncrease', id)
+    emit('toggle-increase', id)
 }
 const toggleReward = (id: number) => {
-    emit('toggleReward', id)
+    emit('toggle-reward', id)
 }
 const removeEmployee = (id: number) => {
-    emit('removeEmployee', id)
+    emit('remove-employee', id)
 }
 </script>
 
