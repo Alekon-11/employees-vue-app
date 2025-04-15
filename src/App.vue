@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-        <EmployeesHeader />
+        <EmployeesHeader :total-rewards="totalRewards" :total-employees="employees.length" />
 
         <div class="search-panel">
             <EmployeesSearch v-model="search" />
@@ -38,6 +38,8 @@ const employees = ref<Employee[]>([
     { name: 'Tisha Katava', salary: 7000, id: 2, increase: false, reward: false }
 ])
 
+const totalRewards = computed(() => employees.value.filter((item: Employee) => item.reward).length)
+
 const searchedEmployees = computed(() => {
     return employees.value.filter((item: Employee) => item.name.toLowerCase().includes(search.value.toLowerCase()))
 })
@@ -64,15 +66,19 @@ const filteredEmployees = computed(() => {
     return filtered
 })
 
+const findEmployee = (id: number) => {
+    return employees.value.find((item: Employee) => item.id === id)
+}
+
 const toggleIncrease = (id: number) => {
-    const targetEmployee = employees.value.find((item: Employee) => item.id === id)
+    const targetEmployee = findEmployee(id)
 
     if (targetEmployee) {
         targetEmployee.increase = !targetEmployee.increase
     }
 }
 const toggleReward = (id: number) => {
-    const targetEmployee = employees.value.find((item: Employee) => item.id === id)
+    const targetEmployee = findEmployee(id)
 
     if (targetEmployee) {
         targetEmployee.reward = !targetEmployee.reward
@@ -89,7 +95,7 @@ const switchFilter = (filter: Filter) => {
     activeFilter.value = filter
 }
 const updateSalary = (id: number, salary: number) => {
-    const targetEmployee = employees.value.find((item: Employee) => item.id === id)
+    const targetEmployee = findEmployee(id)
 
     if (targetEmployee) {
         targetEmployee.salary = salary
