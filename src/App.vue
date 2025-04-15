@@ -11,6 +11,7 @@
             @remove-employee="removeEmployee"
             @toggle-increase="toggleIncrease"
             @toggle-reward="toggleReward"
+            @update-salary="updateSalary"
             :employees="filteredEmployees"
         />
         <EmployeesAddForm @add-employee="addEmployee" />
@@ -37,23 +38,30 @@ const employees = ref<Employee[]>([
     { name: 'Tisha Katava', salary: 7000, id: 2, increase: false, reward: false }
 ])
 
-// const searchedEmployees = computed(() => {
-//     return employees.value.filter((item: Employee) => item.name.toLowerCase().includes(search.value.toLowerCase()))
-// })
+const searchedEmployees = computed(() => {
+    return employees.value.filter((item: Employee) => item.name.toLowerCase().includes(search.value.toLowerCase()))
+})
 
 const filteredEmployees = computed(() => {
+    let filtered = employees.value
+
+    if (search.value.trim()) {
+        filtered = searchedEmployees.value
+    }
+
     switch (activeFilter.value.value) {
         case 'Rise':
-            return employees.value.filter((item: Employee) => item.increase)
+            filtered = employees.value.filter((item: Employee) => item.increase)
             break
         case 'Over':
-            return employees.value.filter((item: Employee) => item.salary !== null && item.salary >= 1000)
+            filtered = employees.value.filter((item: Employee) => item.salary !== null && item.salary >= 1000)
             break
         case 'All':
         default:
-            return employees.value
-            break
+            return filtered
     }
+
+    return filtered
 })
 
 const toggleIncrease = (id: number) => {
@@ -79,6 +87,13 @@ const addEmployee = (employee: Employee) => {
 }
 const switchFilter = (filter: Filter) => {
     activeFilter.value = filter
+}
+const updateSalary = (id: number, salary: number) => {
+    const targetEmployee = employees.value.find((item: Employee) => item.id === id)
+
+    if (targetEmployee) {
+        targetEmployee.salary = salary
+    }
 }
 </script>
 

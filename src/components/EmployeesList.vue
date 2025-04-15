@@ -4,6 +4,7 @@
             @toggle-increase="toggleIncrease"
             @remove-employee="removeEmployee"
             @toggle-reward="toggleReward"
+            @update-salary="updateSalary"
             v-for="employee in employees"
             :employee="employee"
             :key="employee.id"
@@ -25,6 +26,7 @@ const emit = defineEmits<{
     (e: 'toggle-increase', id: number): void
     (e: 'toggle-reward', id: number): void
     (e: 'remove-employee', id: number): void
+    (e: 'update-salary', id: number, salary: number): void
 }>()
 
 const toggleIncrease = (id: number) => {
@@ -35,6 +37,9 @@ const toggleReward = (id: number) => {
 }
 const removeEmployee = (id: number) => {
     emit('remove-employee', id)
+}
+const updateSalary = (id: number, salary: number) => {
+    emit('update-salary', id, salary)
 }
 </script>
 

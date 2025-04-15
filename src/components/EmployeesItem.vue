@@ -4,7 +4,9 @@
         :class="{ increase: employee.increase, reward: employee.reward }"
     >
         <span class="list-group-item-label" @click="toggleIncrease">{{ employee.name }}</span>
-        <input type="text" class="list-group-item-input" :value="`${employee.salary}$`" />
+        <div class="salary-input">
+            <input type="text" class="list-group-item-input" @input="updateSalary" :value="employee.salary" />
+        </div>
         <div class="d-flex justify-content-center align-items-center">
             <button type="button" class="btn-cookie btn-sm" @click="toggleReward">
                 <i class="fas fa-cookie"></i>
@@ -29,6 +31,7 @@ const emit = defineEmits<{
     (e: 'toggle-increase', id: number): void
     (e: 'toggle-reward', id: number): void
     (e: 'remove-employee', id: number): void
+    (e: 'update-salary', id: number, salary: number): void
 }>()
 
 const prop = defineProps<Props>()
@@ -41,6 +44,12 @@ const toggleReward = () => {
 }
 const removeEmployee = () => {
     emit('remove-employee', prop.employee.id)
+}
+const updateSalary = (e: Event) => {
+    const input = e.target as HTMLInputElement
+    const clearInput = input.value.replace(/\D/g, '')
+    input.value = clearInput
+    emit('update-salary', prop.employee.id, +clearInput)
 }
 </script>
 
@@ -66,6 +75,8 @@ const removeEmployee = () => {
     font-size: 20px;
     text-align: center;
     border: 0;
+    padding: 0 25px;
+    max-width: 150px;
 }
 
 .list-group-item button {
@@ -109,5 +120,20 @@ const removeEmployee = () => {
 
 .list-group-item.reward .btn-star {
     color: #aeaeae;
+}
+.salary-input {
+    position: relative;
+}
+
+.salary-input::before {
+    content: '$';
+    display: block;
+    position: absolute;
+    font-size: 20px;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-70%);
+    line-height: 1;
+    z-index: 1;
 }
 </style>
