@@ -14,13 +14,13 @@ interface Props {
 }
 
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: string): void
+    (e: 'update:model-value', value: string): void
 }>()
 defineProps<Props>()
 
 const searchEmployee = (e: Event) => {
     const event = e.target as HTMLInputElement
-    emit('update:modelValue', event.value)
+    emit('update:model-value', event.value)
 }
 </script>
 

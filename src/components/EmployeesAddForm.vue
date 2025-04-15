@@ -31,10 +31,10 @@ const addEmployee = () => {
 
     if (name.value && salary.value) {
         emit('add-employee', newEmployee)
-    }
 
-    name.value = ''
-    salary.value = null
+        name.value = ''
+        salary.value = null
+    }
 }
 </script>
 

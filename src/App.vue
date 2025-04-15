@@ -4,14 +4,14 @@
 
         <div class="search-panel">
             <EmployeesSearch v-model="search" />
-            <EmployeesFilter />
+            <EmployeesFilter :current-filter="activeFilter" @switch-filter="switchFilter" />
         </div>
 
         <EmployeesList
             @remove-employee="removeEmployee"
             @toggle-increase="toggleIncrease"
             @toggle-reward="toggleReward"
-            :employees="employees"
+            :employees="filteredEmployees"
         />
         <EmployeesAddForm @add-employee="addEmployee" />
     </div>
@@ -26,6 +26,10 @@ import EmployeesList from './components/EmployeesList.vue'
 import EmployeesSearch from './components/EmployeesSearch.vue'
 
 import type { Employee } from './interfaces/Employee'
+import type { Filter } from './types/Filters'
+
+const activeFilter = ref<Filter>({ value: 'All', text: 'Все сотрудники' })
+const search = ref<string>('')
 
 const employees = ref<Employee[]>([
     { name: 'Jhon Smith', salary: 1000, id: 0, increase: true, reward: false },
@@ -33,10 +37,23 @@ const employees = ref<Employee[]>([
     { name: 'Tisha Katava', salary: 7000, id: 2, increase: false, reward: false }
 ])
 
-const search = ref<string>('')
+// const searchedEmployees = computed(() => {
+//     return employees.value.filter((item: Employee) => item.name.toLowerCase().includes(search.value.toLowerCase()))
+// })
 
-const searchedEmployee = computed(() => {
-    return employees.value.filter((item: Employee) => item.name.toLowerCase().includes(search.value.toLowerCase()))
+const filteredEmployees = computed(() => {
+    switch (activeFilter.value.value) {
+        case 'Rise':
+            return employees.value.filter((item: Employee) => item.increase)
+            break
+        case 'Over':
+            return employees.value.filter((item: Employee) => item.salary !== null && item.salary >= 1000)
+            break
+        case 'All':
+        default:
+            return employees.value
+            break
+    }
 })
 
 const toggleIncrease = (id: number) => {
@@ -59,6 +76,9 @@ const removeEmployee = (id: number) => {
 }
 const addEmployee = (employee: Employee) => {
     employees.value.push(employee)
+}
+const switchFilter = (filter: Filter) => {
+    activeFilter.value = filter
 }
 </script>
 
